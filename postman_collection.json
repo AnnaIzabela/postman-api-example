@@ -1,0 +1,256 @@
+{
+   "info":{
+      "_postman_id":"00000000-0000-0000-0000-000000000000",
+      "name":"Example",
+      "schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+   },
+   "item":[
+      {
+         "name":"Login",
+         "event":[
+            {
+               "listen":"test",
+               "script":{
+                  "type":"text/javascript",
+                  "exec":[
+                     "pm.test(\"Save Bearer Token\", function () {",
+                     "    var bearerToken = pm.response.headers.get(\"Authorization\");",
+                     "    if (bearerToken && bearerToken.startsWith(\"Bearer \")) {",
+                     "        bearerToken = bearerToken.substring(7);",
+                     "    }",
+                     "    pm.collectionVariables.set(\"bearerToken\", bearerToken);",
+                     "    pm.expect(pm.collectionVariables.get(\"bearerToken\")).to.not.be.null;",
+                     "});"
+                  ]
+               }
+            }
+         ],
+         "request":{
+            "auth":{
+               "type":"noauth"
+            },
+            "method":"POST",
+            "header":[
+               
+            ],
+            "body":{
+               "mode":"raw",
+               "raw":"{\"username\":\"{{username}}\",\"password\":\"{{password}}\",\"type\":\"PORTAL\"}",
+               "options":{
+                  "raw":{
+                     "language":"json"
+                  }
+               }
+            },
+            "url":{
+               "raw":"{{baseURL}}/login",
+               "host":[
+                  "{{baseURL}}"
+               ],
+               "path":[
+                  "login"
+               ]
+            }
+         },
+         "response":[
+            
+         ]
+      },
+      {
+         "name":"Get Projects",
+         "request":{
+            "method":"GET",
+            "header":[
+               {
+                  "key":"Authorization",
+                  "value":"{{bearerToken}}",
+                  "type":"text"
+               }
+            ],
+            "url":{
+               "raw":"{{baseURL}}/projects",
+               "host":[
+                  "{{baseURL}}"
+               ],
+               "path":[
+                  "projects"
+               ]
+            }
+         },
+         "response":[
+            
+         ]
+      },
+      {
+         "name":"Get Drivers",
+         "request":{
+            "method":"GET",
+            "header":[
+               {
+                  "key":"Authorization",
+                  "value":"{{bearerToken}}",
+                  "type":"text"
+               }
+            ],
+            "url":{
+               "raw":"{{baseURL}}/drivers",
+               "host":[
+                  "{{baseURL}}"
+               ],
+               "path":[
+                  "drivers"
+               ]
+            }
+         },
+         "response":[
+            
+         ]
+      },
+      {
+         "name":"Get Clients",
+         "request":{
+            "method":"GET",
+            "header":[
+               
+            ],
+            "url":{
+               "raw":"{{baseURL}}/clients",
+               "host":[
+                  "{{baseURL}}"
+               ],
+               "path":[
+                  "clients"
+               ]
+            }
+         },
+         "response":[
+            
+         ]
+      },
+      {
+         "name":"Get Cars",
+         "request":{
+            "method":"GET",
+            "header":[
+               
+            ],
+            "url":{
+               "raw":"{{baseURL}}/cars",
+               "host":[
+                  "{{baseURL}}"
+               ],
+               "path":[
+                  "cars"
+               ]
+            }
+         },
+         "response":[
+            
+         ]
+      },
+      {
+         "name":"Add Project",
+         "event":[
+            {
+               "listen":"test",
+               "script":{
+                  "type":"text/javascript",
+                  "exec":[
+                     "let responseBody = pm.response.json();",
+                     "if (responseBody && responseBody.id) {",
+                     "    let projectId = responseBody.id;",
+                     "    let variableName = `project_${projectId}`;",
+                     "    pm.environment.set(variableName, projectId);",
+                     "}",
+                     "pm.test(\"should verify response status 200\", function () {",
+                     "    pm.response.to.have.status(200);",
+                     "});"
+                  ]
+               }
+            }
+         ],
+         "request":{
+            "method":"POST",
+            "header":[
+               
+            ],
+            "body":{
+               "mode":"raw",
+               "raw":"{ \"name\": \"{{name}}\", \"startDate\": \"{{startDate}}\", \"endDate\": \"{{endDate}}\" }",
+               "options":{
+                  "raw":{
+                     "language":"json"
+                  }
+               }
+            },
+            "url":{
+               "raw":"{{baseURL}}/projects",
+               "host":[
+                  "{{baseURL}}"
+               ],
+               "path":[
+                  "projects"
+               ]
+            }
+         },
+         "response":[
+            
+         ]
+      }
+   ],
+   "event":[
+      {
+         "listen":"prerequest",
+         "script":{
+            "type":"text/javascript",
+            "exec":[
+               "const loginURL = pm.collectionVariables.get(\"baseURL\") + \"/login\";",
+               "const username = pm.collectionVariables.get(\"username\");",
+               "const password = pm.collectionVariables.get(\"password\");",
+               "if (!username || !password) { throw new Error(\"Username or password not set.\"); }",
+               "pm.sendRequest({",
+               "    url: loginURL,",
+               "    method: \"POST\",",
+               "    headers: { \"Content-Type\": \"application/json\" },",
+               "    body: { mode: \"raw\", raw: JSON.stringify({ username, password, type: \"PORTAL\" }) }",
+               "}, function (err, response) {",
+               "    if (err) throw new Error(\"Login request failed\");",
+               "    const authorizationHeader = response.headers.get('Authorization');",
+               "    const bearerToken = authorizationHeader ? authorizationHeader.split(' ')[1] : null;",
+               "    pm.collectionVariables.set(\"bearerToken\", bearerToken);",
+               "});"
+            ]
+         }
+      }
+   ],
+   "variable":[
+      {
+         "key":"username",
+         "value":"example_user"
+      },
+      {
+         "key":"password",
+         "value":"example_password"
+      },
+      {
+         "key":"baseURL",
+         "value":"https://example.com/api"
+      },
+      {
+         "key":"bearerToken",
+         "value":""
+      },
+      {
+         "key":"name",
+         "value":"Sample Project"
+      },
+      {
+         "key":"startDate",
+         "value":"2024-01-01"
+      },
+      {
+         "key":"endDate",
+         "value":"2024-12-31"
+      }
+   ]
+}
