@@ -1,67 +1,21 @@
 # Example Postman Collection
 
-This repository contains an **example Postman collection** for testing an API. It demonstrates how to perform basic API requests and automated tests using Postman's built-in scripting capabilities and the Chai assertion library.
+This is a **sample Postman collection** created to demonstrate API testing skills. It includes basic API requests and automated tests using Postman's **built-in Chai library**.
 
-> **Note:** This is a sample collection. All usernames, passwords, and URLs are placeholders. Replace them with your own values when running the collection.
+> The collection was developed using **Swagger documentation** as a reference.
 
-## Collection Overview
+## Overview
 
-The collection includes the following requests:
+- **Login** – POST request to `/login`, saves Bearer token.  
+- **Get Projects / Drivers / Clients / Cars** – GET requests using the saved token.  
+- **Add Project** – POST request to `/projects` with example data and a test for response status `200`.
 
-1. **Login**  
-   - Sends a POST request to `/login` with `username` and `password`.  
-   - Saves the Bearer token from the `Authorization` header into a collection variable for use in subsequent requests.
+## Key Features
 
-2. **Get Projects**  
-   - Sends a GET request to `/projects`.  
-   - Uses the saved Bearer token for authorization.
+- Automated tests with Chai assertions.  
+- Pre-request scripts for token handling.  
+- Environment and collection variables used for dynamic requests.
 
-3. **Get Drivers**  
-   - Sends a GET request to `/drivers`.  
-   - Uses the saved Bearer token for authorization.
+## Notes
 
-4. **Get Clients**  
-   - Sends a GET request to `/clients`.
-
-5. **Get Cars**  
-   - Sends a GET request to `/cars`.
-
-6. **Add Project**  
-   - Sends a POST request to `/projects` with sample project data (`name`, `startDate`, `endDate`).  
-   - Saves the project ID returned in the response as an environment variable.  
-   - Performs a simple test to ensure the response status is `200 OK`.
-
-## Automated Tests
-
-The collection includes the following automated tests:
-
-- **Login Test**:  
-  - Verifies that the Bearer token is returned and saved correctly.  
-
-- **Add Project Test**:  
-  - Checks that the response status is `200`.  
-  - Saves the project ID to an environment variable for further use.
-
-> All other requests currently do not include response validation tests but can be extended easily using Postman's scripting features.
-
-## Variables
-
-The collection uses the following **variables**:
-
-| Variable | Value (example) | Description |
-|----------|----------------|-------------|
-| `username` | `example_user` | Login username (replace with your own) |
-| `password` | `example_password` | Login password (replace with your own) |
-| `baseURL` | `https://example.com/api` | Base URL of the API |
-| `bearerToken` | *(empty)* | Populated after login automatically |
-| `name` | `Sample Project` | Example project name |
-| `startDate` | `2024-01-01` | Example project start date |
-| `endDate` | `2024-12-31` | Example project end date |
-
-## Usage
-
-1. Import the `Example.postman_collection.json` file into Postman.  
-2. Make sure the environment variables are set correctly (or use the provided defaults).  
-3. Run the requests individually or use the Postman Collection Runner to execute all requests with automated tests.  
-
-> **Important:** Replace `username`, `password`, and `baseURL` with your real credentials and API endpoint before running against a live API.
+All data (username, password, URLs) are **placeholder values**. This collection is meant to **showcase testing skills**, not for direct API usage.
